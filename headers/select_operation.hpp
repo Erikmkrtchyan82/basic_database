@@ -1,15 +1,16 @@
-#ifndef _add_operation_hpp_
-#define _add_operation_hpp_
+#ifndef _select_operation_hpp_
+#define _select_operation_hpp_
 
 #include <vector>
 #include <string>
 
 #include "../headers/operation.hpp"
 
-class Add: public Operation {
+class Select: public Operation {
 public:
-    Add(std::string name = "ADD");
+    Select(std::string name = "SELECT");
     int execute (const std::vector<std::string>&, std::vector<type_ptr>&) override;
 };
 
-#endif // _add_operation_hpp_
+
+#endif // _select_operation_hpp_

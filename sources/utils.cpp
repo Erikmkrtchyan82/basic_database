@@ -2,15 +2,15 @@
 #include <fstream>
 #include "../headers/utils.hpp"
 
-std::vector<std::string> split(std::string input) {
+std::vector<std::string> split(std::string input, char sep) {
     std::vector<std::string> chunks;
     std::string chunk{};
     
     for( char ch:input) {
-        if (ch == ' ' && chunk != "") {
+        if (ch == sep && chunk != "") {
             chunks.push_back(chunk);
             chunk = "";
-        } else if (ch != ' '){
+        } else if (ch != sep){
             chunk += ch;
         }
     }
