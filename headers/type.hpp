@@ -1,20 +1,20 @@
-#ifndef _type_hpp_
-#define _type_hpp_
+// #ifndef _type_hpp_
+// #define _type_hpp_
 
-#include <string>
-#include <nlohmann/json.hpp>
+// #include <string>
+// #include <nlohmann/json.hpp>
 
-using json = nlohmann::json;
+// using json = nlohmann::json;
 
-class Type {
-public:
-    virtual std::unique_ptr<Type> serialize(json&) = 0;
-    virtual json deserialize(std::unique_ptr<Type>&) = 0;
-    std::string get_class_name(){return this->_class_name;};
-protected:
-    std::string _class_name;
-};
+// class Type {
+// public:
+//     virtual std::unique_ptr<Type> serialize(json&) = 0;
+//     virtual json deserialize(std::unique_ptr<Type>&) = 0;
+//     std::string get_class_name(){return this->_class_name;};
+// protected:
+//     std::string _class_name;
+// };
+// std::ostream& operator<<(std::ostream& os, Type& obj){return os;};
+// using type_ptr = std::unique_ptr<Type>;
 
-using type_ptr = std::unique_ptr<Type>;
-
-#endif // _type_hpp_
+// #endif // _type_hpp_

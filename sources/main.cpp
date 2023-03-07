@@ -20,13 +20,16 @@ int main(int argc, char* argv[]) {
 
     Connection conn(db_path);
     conn.add_new_operation(std::make_unique<Add>());
-    conn.add_new_operation(std::make_unique<Select>());
-    conn.add_new_type(std::make_unique<Group>());
+    // conn.add_new_operation(std::make_unique<Select>());
+    // conn.add_new_type(std::make_unique<Group>());
     // conn.add_new_type(std::make_unique<Laboratory>());
     do
     {
         command = prompt();
+        if (all(command, [](int c) -> int{return c == ' ';})) continue;
         if (command == EXIT_COMMANDS) break;
+        if (command == "p")
+            std::cout << conn.db() <<std::endl;
 
         conn.execute(command);
 

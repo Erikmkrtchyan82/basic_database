@@ -3,13 +3,15 @@
 
 #include <vector>
 #include <string>
+#include <functional>
+#include <nlohmann/json.hpp>
 
 #include "../headers/operation.hpp"
 
 class Add: public Operation {
 public:
     Add(std::string name = "ADD");
-    int execute (const std::vector<std::string>&, std::vector<type_ptr>&) override;
+    std::function<bool(nlohmann::json&)> execute (const std::vector<std::string>&) override;
 };
 
 #endif // _add_operation_hpp_

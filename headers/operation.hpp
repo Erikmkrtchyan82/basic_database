@@ -3,12 +3,14 @@
 
 #include <string>
 #include <memory>
+#include <functional>
+#include <nlohmann/json.hpp>
 
 #include "../headers/type.hpp"
 
 class Operation {
 public:
-    virtual int execute(const std::vector<std::string>&, std::vector<type_ptr>&) = 0;
+    virtual std::function<bool(nlohmann::json&)> execute(const std::vector<std::string>&) = 0;
     std::string get_name() const {return this->_class_name;};
     virtual ~Operation(){};
 protected:

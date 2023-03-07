@@ -6,7 +6,12 @@
 
 #include <iostream>
 Connection::Connection(const fs::path& path) {
+    this->_db_path = path;
     this->_database = json::parse(std::ifstream(path));
+}
+
+Connection::~Connection() {
+    std::ofstream(this->_db_path) << this->_database.dump(4);
 }
 
 bool Connection::add_new_operation(operation_ptr&& op) {
@@ -21,10 +26,10 @@ bool Connection::add_new_operation(operation_ptr&& op) {
     return will_add;
 }
 
-bool Connection::add_new_type(type_ptr&& tp){
-    this->_types.emplace_back(std::move(tp));
-    return true;
-}
+// bool Connection::add_new_type(type_ptr&& tp){
+//     this->_types.emplace_back(std::move(tp));
+//     return true;
+// }
 
 int Connection::execute(const std::string& query) {
     auto query_chunks = split(query);
@@ -37,7 +42,7 @@ int Connection::execute(const std::string& query) {
                                 });
     int status = 0;
     if (operation != this->_operations.end()) {
-        status = (*operation)->execute({query_chunks.begin() + 1, query_chunks.end()});
+        status = (*operation)->execute({query_chunks.begin() + 1, query_chunks.end()})(this->_database);
     }
     return status;
 }
