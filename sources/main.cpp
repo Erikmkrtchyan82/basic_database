@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
         /*
         ADD Lab.(name) VALUES "abcd";     (defaults: str -> N/A, int -> 0)
-
+        SELECT LAB WHERE name="lab1"
         */
 
     } while (true);

@@ -45,7 +45,14 @@ int Connection::execute(const std::string& query) {
                                   });
     int status = 0;
     if (operation != this->_operations.end()) {
-        status = (*operation)->execute({query_chunks.begin() + 1, query_chunks.end()})(this->_database);
+        std::vector<std::string> query = {query_chunks.begin() + 1, query_chunks.end()};
+        try {
+            (*operation)->validate(query)(this->_scheme);
+        } catch (std::string& e) {
+            std::cout << e << std::endl;
+            return -1;
+        }
+        status = (*operation)->execute(query)(this->_database);
     }
     return status;
 }

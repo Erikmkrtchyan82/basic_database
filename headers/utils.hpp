@@ -18,5 +18,6 @@ nlohmann::json deserialize(std::vector<std::string>& keys, std::vector<std::stri
 bool all(const std::string& s, int (*pred)(int));
 
 std::string print_table(const nlohmann::json&);
+bool match(const std::string& type, const std::string& value);
 
 #endif  // _utils_header_

@@ -9,9 +9,10 @@
 #include "../headers/operation.hpp"
 
 class Add : public Operation {
-public:
+   public:
     Add();
     std::function<bool(nlohmann::json&)> execute(const std::vector<std::string>&) override;
+    std::function<void(const nlohmann::json&)> validate(const std::vector<std::string>&) override;
 };
 
 #endif  // _add_operation_hpp_

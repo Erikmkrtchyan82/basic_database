@@ -53,7 +53,7 @@ std::filesystem::path get_scheme_path(int argc, char* argv[]) {
     }
     if (!fs::exists(scheme_path) || fs::is_empty(scheme_path)) {
         auto error_message = "[ERROR]: " + scheme_path.string() + " does not exist or empty!\n";
-        std::cout<<error_message<<"\n";
+        std::cout << error_message << "\n";
         throw error_message;
     }
     return scheme_path;
@@ -63,15 +63,30 @@ bool all(const std::string& s, int (*pred)(int)) {
     return std::all_of(s.begin(), s.end(), pred);
 }
 
+bool isNumber(const std::string& s) {
+    return all(s, std::isdigit);
+}
+
 json deserialize(std::vector<std::string>& keys, std::vector<std::string>& values) {
     json js;
     for (int i = 0; i < keys.size(); ++i) {
-        if (all(values[i], std::isdigit))
+        if (isNumber(values[i])) {
             js[keys[i]] = stoi(values[i]);
-        else
+        } else
             js[keys[i]] = values[i];
     }
     return js;
+}
+
+bool match(const std::string& type, const std::string& value) {
+    if (type == "int") {
+        std::cout << type << " is int\n";
+        return isNumber(value);
+    }
+    if (type == "string") {
+        return !isNumber(value);
+    }
+    throw "[ERROR]: Unknown type '" + type + "'!";
 }
 
 std::string print_table(const nlohmann::json& js) {
