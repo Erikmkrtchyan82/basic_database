@@ -45,7 +45,6 @@ std::function<void(const json&)> Add::validate(const std::vector<std::string>& q
         for (auto& [key, value] : scheme[type_name].items()) {
             if (std::find(name_chunks.begin(), name_chunks.end(), key) == name_chunks.end()) {
                 absent_keys.push_back(key);
-                // throw "[ERROR]: Value for '" + key + "' is not set!";
             }
         }
         if (absent_keys.size() != 0) {
@@ -59,17 +58,17 @@ std::function<void(const json&)> Add::validate(const std::vector<std::string>& q
 }
 
 std::function<bool(json&)> Add::execute(const std::vector<std::string>& query) {
-    std::string type_name = query[0];
+    std::string table_name = query[0];
     std::vector<std::string> name_chunks = split(query[1], ',');
     std::vector<std::string> value_chunks = split(query[3], ',');
 
     json js = deserialize(name_chunks, value_chunks);
 
     return [=](json& db) {
-        if (!db.contains(type_name))
-            db[type_name] = json::array();
+        if (!db.contains(table_name))
+            db[table_name] = json::array();
 
-        for (auto& obj : db[type_name]) {
+        for (auto& obj : db[table_name]) {
             bool same_obj = true;
             for (auto& [key, _] : js.items()) {
                 same_obj &= (obj[key] == js[key]);
@@ -80,7 +79,7 @@ std::function<bool(json&)> Add::execute(const std::vector<std::string>& query) {
             }
         }
 
-        db[type_name].push_back(js);
+        db[table_name].push_back(js);
 
         return true;
     };
