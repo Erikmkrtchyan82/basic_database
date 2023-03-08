@@ -1,8 +1,5 @@
 // #include "../headers/select_operation.hpp"
 
-// #include "../headers/group.hpp"
-// #include "../headers/laboratory.hpp"
-
 // #include <vector>
 // #include <string>
 // #include <nlohmann/json.hpp>

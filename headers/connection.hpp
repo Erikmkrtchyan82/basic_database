@@ -2,29 +2,30 @@
 #define _connection_hpp_
 
 #include <filesystem>
-#include <vector>
 #include <nlohmann/json.hpp>
+#include <string>
+#include <vector>
 
 #include "../headers/operation.hpp"
-#include "../headers/type.hpp"
 
 using json = nlohmann::json;
+
 namespace fs = std::filesystem;
 
 class Connection {
-public:
-    Connection(const fs::path& db_path);
-    int execute(const std::string& query);
-    bool add_new_operation(operation_ptr&& op);
-    // bool add_new_type(type_ptr&& tp);
+   public:
+    Connection(const fs::path&, const fs::path&);
+    int execute(const std::string&);
+    bool add_new_operation(operation_ptr&&);
     ~Connection();
-    json db(){return this->_database;};
-private:
+    json get_db();
+
+   private:
     fs::path _db_path;
+    fs::path _db_scheme;
     json _database;
+    json _scheme;
     std::vector<operation_ptr> _operations;
-    // std::vector<type_ptr> _types;
 };
 
-
-#endif // _connection_hpp_
+#endif  // _connection_hpp_
