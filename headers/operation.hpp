@@ -10,7 +10,7 @@
 class Operation {
    public:
     virtual std::function<bool(nlohmann::json&)> execute(const std::vector<std::string>&) = 0;
-    virtual std::function<void(const nlohmann::json&)> validate(const std::vector<std::string>&) = 0;
+    virtual void validate(const std::vector<std::string>&, const nlohmann::json&) = 0;
     std::string get_name() const { return this->_class_name; };
     virtual ~Operation(){};
 

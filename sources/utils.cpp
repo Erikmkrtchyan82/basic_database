@@ -8,22 +8,43 @@
 
 using json = nlohmann::json;
 
-std::vector<std::string> split(std::string input, char sep) {
+// std::vector<std::string> split(const std::string& input, char sep) {
+//     std::vector<std::string> chunks;
+//     std::string chunk{};
+
+//     std::for_each(input.begin(), input.end(), [&](char ch) {
+//         if (ch == sep && chunk != "") {
+//             chunks.push_back(chunk);
+//             chunk = "";
+//         } else if (ch != sep) {
+//             chunk += ch;
+//         }
+//     });
+
+//     if (chunk != "") chunks.push_back(chunk);
+
+//     return chunks;
+// }
+
+std::vector<std::string> split(const std::string& input, const std::string& sep) {
     std::vector<std::string> chunks;
-    std::string chunk{};
 
-    std::for_each(input.begin(), input.end(), [&](char ch) {
-        if (ch == sep && chunk != "") {
-            chunks.push_back(chunk);
-            chunk = "";
-        } else if (ch != sep) {
-            chunk += ch;
-        }
-    });
+    auto begin = 0;
+    do {
+        auto sep_idx = input.find(sep, begin);
+        if (sep_idx == std::string::npos) break;
+        chunks.push_back(input.substr(begin, sep_idx - begin));
+        begin = sep_idx + sep.size();
+    } while (true);
 
-    if (chunk != "") chunks.push_back(chunk);
+    chunks.push_back(input.substr(begin));
 
     return chunks;
+}
+
+std::string to_lower(std::string input) {
+    std::for_each(input.begin(), input.end(), [](char& ch) { ch = std::tolower(ch); });
+    return input;
 }
 
 std::string prompt() {
@@ -80,7 +101,6 @@ json deserialize(std::vector<std::string>& keys, std::vector<std::string>& value
 
 bool match(const std::string& type, const std::string& value) {
     if (type == "int") {
-        std::cout << type << " is int\n";
         return isNumber(value);
     }
     if (type == "string") {
@@ -93,6 +113,11 @@ std::string print_table(const nlohmann::json& js) {
     std::stringstream table;
     for (auto& [table_name, contents] : js.items()) {
         table << " * " << table_name << "\n\n\t";
+        if (contents.size() == 0) {
+            table << "No data"
+                  << "\n";
+            continue;
+        }
         if (contents[0].size() != 0) {
             for (auto obj : contents[0].items()) {
                 table << "| " << std::left << std::setw(10) << obj.key();

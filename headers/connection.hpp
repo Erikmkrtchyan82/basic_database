@@ -15,6 +15,7 @@ namespace fs = std::filesystem;
 class Connection {
    public:
     Connection(const fs::path&, const fs::path&);
+    void reimport();
     int execute(const std::string&);
     bool add_new_operation(operation_ptr&&);
     ~Connection();

@@ -1,4 +1,4 @@
-#include "../headers/select_operation.hpp"
+#include "../headers/delete_operation.hpp"
 
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -9,11 +9,11 @@
 
 using json = nlohmann::json;
 
-Select::Select() {
-    this->_class_name = "select";
+Delete::Delete() {
+    this->_class_name = "delete";
 }
 
-void Select::validate(const std::vector<std::string>& query, const json& scheme) {
+void Delete::validate(const std::vector<std::string>& query, const json& scheme) {
     if (query.size() != 3) {
         throw std::string("[ERROR]: Arguments count doesn't match for " + this->_class_name + "operation!");
     }
@@ -58,7 +58,7 @@ void Select::validate(const std::vector<std::string>& query, const json& scheme)
     }
 }
 
-std::function<bool(json&)> Select::execute(const std::vector<std::string>& query) {
+std::function<bool(json&)> Delete::execute(const std::vector<std::string>& query) {
     std::string table_name = query[0];
     std::vector<std::string> chunks = split(query[2], ",");
 
@@ -80,8 +80,8 @@ std::function<bool(json&)> Select::execute(const std::vector<std::string>& query
     }
 
     return [=](json& db) {
-        json matched_objs;
-        matched_objs[table_name] = json::array();
+        json not_matched_objs;
+        not_matched_objs[table_name] = json::array();
         for (auto& obj : db[table_name]) {
             bool match = true;
             for (int i = 0; i < name_chunks.size(); ++i) {
@@ -111,11 +111,12 @@ std::function<bool(json&)> Select::execute(const std::vector<std::string>& query
                     }
                 }
             }
-            if (match) {
-                matched_objs[table_name].push_back(obj);
+            if (!match) {
+                not_matched_objs[table_name].push_back(obj);
             }
         }
-        std::cout << print_table(matched_objs) << std::endl;
+        db[table_name] = not_matched_objs[table_name];
+        std::cout << "DELETED" << std::endl;
 
         return true;
     };

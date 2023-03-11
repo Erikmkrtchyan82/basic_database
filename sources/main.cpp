@@ -6,6 +6,7 @@
 
 #include "../headers/add_operation.hpp"
 #include "../headers/connection.hpp"
+#include "../headers/delete_operation.hpp"
 #include "../headers/select_operation.hpp"
 #include "../headers/utils.hpp"
 
@@ -19,31 +20,21 @@ int main(int argc, char* argv[]) {
 
     Connection conn(db_path, scheme_path);
     conn.add_new_operation(std::make_unique<Add>());
-    // conn.add_new_operation(std::make_unique<Select>());
+    conn.add_new_operation(std::make_unique<Select>());
+    conn.add_new_operation(std::make_unique<Delete>());
 
     do {
         command = prompt();
-        if (all(command, [](int c) -> int { return c == ' '; })) continue;
-        if (command == EXIT_COMMANDS) break;
-        if (command == "p")
+        if (all(command, [](int c) -> int { return c == ' '; }))
+            continue;
+        else if (command == EXIT_COMMANDS)
+            break;
+        else if (command == PRINT_COMMAND)
             std::cout << print_table(conn.get_db()) << std::endl;
-
-        conn.execute(command);
-
-        /*
-
-        Connection conn{"<db_path>"};
-        conn.execute("<command>");
-            |
-            |
-            \--> vector<Operations> operations;
-                 find operation that name is command[0], and call it's execute
-        */
-
-        /*
-        ADD Lab.(name) VALUES "abcd";     (defaults: str -> N/A, int -> 0)
-        SELECT LAB WHERE name=lab1"
-        */
+        else if (command == REIMPORT_COMMAND)
+            conn.reimport();
+        else
+            conn.execute(command);
 
     } while (true);
 
