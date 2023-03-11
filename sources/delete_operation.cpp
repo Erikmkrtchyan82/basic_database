@@ -14,9 +14,8 @@ Delete::Delete() {
 }
 
 void Delete::validate(const std::vector<std::string>& query, const json& scheme) {
-    if (query.size() != 3) {
-        throw std::string("[ERROR]: Arguments count doesn't match for " + this->_class_name + "operation!");
-    }
+    this->_check_size(query.size(), 3);
+
     std::string table_name = query[0];
     std::vector<std::string> chunks = split(query[2], ",");
 

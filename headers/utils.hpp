@@ -12,9 +12,9 @@ const static std::string PRINT_COMMAND = "p";
 const static std::string REIMPORT_COMMAND = "r";
 
 std::string prompt();
-// std::vector<std::string> split(const std::string& input, char sep = ' ');
 std::vector<std::string> split(const std::string& input, const std::string& sep = "");
 std::string to_lower(std::string input);
+std::string to_upper(std::string input);
 
 std::filesystem::path get_db_path(int argc, char* argv[]);
 std::filesystem::path get_scheme_path(int argc, char* argv[]);

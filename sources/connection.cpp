@@ -35,7 +35,7 @@ bool Connection::add_new_operation(operation_ptr&& op) {
                                      return op1->get_name() == op->get_name();
                                  }) == this->_operations.end();
     if (will_add) {
-        std::cout << "[INFO] Adding " << op->get_name() << " operation\n";
+        std::cout << "[INFO] Adding '" << to_upper(op->get_name()) << "' operation\n";
         this->_operations.emplace_back(std::move(op));
     }
     return will_add;

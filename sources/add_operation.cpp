@@ -15,9 +15,8 @@ Add::Add() {
 }
 
 void Add::validate(const std::vector<std::string>& query, const json& scheme) {
-    if (query.size() != 4) {
-        throw "[ERROR]: Arguments count doesn't match for " + this->_class_name + " operation!";
-    }
+    this->_check_size(query.size(), 4);
+
     std::string table_name = query[0];
     std::vector<std::string> name_chunks = split(query[1], ",");
     std::vector<std::string> value_chunks = split(query[3], ",");

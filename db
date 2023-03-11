@@ -1,0 +1,24 @@
+#! /usr/bin/env bash
+
+set -e pipefail
+
+function run() {
+    ./build/cpp_db "$@"
+}
+
+function build() {
+    rm -rf build
+    cmake -B build
+    cmake --build build
+}
+
+if [[ "$1" == "run" ]]; then
+    shift
+    run "$@"
+elif [[ "$1" == "build" ]]; then
+    build
+else
+    build
+    shift
+    run "$@"
+fi

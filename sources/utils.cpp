@@ -8,24 +8,6 @@
 
 using json = nlohmann::json;
 
-// std::vector<std::string> split(const std::string& input, char sep) {
-//     std::vector<std::string> chunks;
-//     std::string chunk{};
-
-//     std::for_each(input.begin(), input.end(), [&](char ch) {
-//         if (ch == sep && chunk != "") {
-//             chunks.push_back(chunk);
-//             chunk = "";
-//         } else if (ch != sep) {
-//             chunk += ch;
-//         }
-//     });
-
-//     if (chunk != "") chunks.push_back(chunk);
-
-//     return chunks;
-// }
-
 std::vector<std::string> split(const std::string& input, const std::string& sep) {
     std::vector<std::string> chunks;
 
@@ -44,6 +26,11 @@ std::vector<std::string> split(const std::string& input, const std::string& sep)
 
 std::string to_lower(std::string input) {
     std::for_each(input.begin(), input.end(), [](char& ch) { ch = std::tolower(ch); });
+    return input;
+}
+
+std::string to_upper(std::string input) {
+    std::for_each(input.begin(), input.end(), [](char& ch) { ch = std::toupper(ch); });
     return input;
 }
 
