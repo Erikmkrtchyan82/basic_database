@@ -15,6 +15,10 @@ Connection::Connection(const fs::path& db_path, const fs::path& scheme_path) {
 }
 
 Connection::~Connection() {
+    this->commit();
+}
+
+void Connection::commit() {
     std::ofstream(this->_db_path) << this->_database.dump(4);
 }
 
@@ -60,6 +64,7 @@ int Connection::execute(const std::string& query) {
             return -1;
         }
         status = (*operation)->execute(query)(this->_database);
+        this->commit();
     } else {
         std::cout << "[ERROR]: Unknown operation '" << operation_name << "'!" << std::endl;
         return -1;

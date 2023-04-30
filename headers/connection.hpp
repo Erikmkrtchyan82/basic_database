@@ -20,6 +20,7 @@ class Connection {
     bool add_new_operation(operation_ptr&&);
     ~Connection();
     json get_db();
+    void commit();
 
    private:
     fs::path _db_path;

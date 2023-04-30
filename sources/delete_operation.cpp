@@ -13,7 +13,18 @@ Delete::Delete() {
     this->_class_name = "delete";
 }
 
+void Delete::_validate_all(const std::vector<std::string>& query, const json& scheme) {
+    std::string table_name = query[0];
+    if (!scheme.contains(table_name)) {
+        throw "[ERROR]: Unknown table '" + table_name + "'!";
+    }
+}
+
 void Delete::validate(const std::vector<std::string>& query, const json& scheme) {
+    if (query.size() == 1) {
+        this->_validate_all(query, scheme);
+        return;
+    }
     this->_check_size(query.size(), 3);
 
     std::string table_name = query[0];
@@ -59,23 +70,26 @@ void Delete::validate(const std::vector<std::string>& query, const json& scheme)
 
 std::function<bool(json&)> Delete::execute(const std::vector<std::string>& query) {
     std::string table_name = query[0];
-    std::vector<std::string> chunks = split(query[2], ",");
+    std::vector<std::string> chunks;
 
     std::vector<std::string> name_chunks;
     std::vector<std::string> compares;
     std::vector<std::string> value_chunks;
 
-    for (auto& chunk : chunks) {
-        std::string name, compare, value;
-        if (chunk.find("!=") != std::string::npos) {
-            compare = "!=";
-        } else {
-            compare = "=";
+    if (query.size() != 1) {
+        chunks = split(query[2], ",");
+        for (auto& chunk : chunks) {
+            std::string name, compare, value;
+            if (chunk.find("!=") != std::string::npos) {
+                compare = "!=";
+            } else {
+                compare = "=";
+            }
+            auto name_value = split(chunk, compare);
+            name_chunks.push_back(name_value[0]);
+            compares.push_back(compare);
+            value_chunks.push_back(name_value[1]);
         }
-        auto name_value = split(chunk, compare);
-        name_chunks.push_back(name_value[0]);
-        compares.push_back(compare);
-        value_chunks.push_back(name_value[1]);
     }
 
     return [=](json& db) {

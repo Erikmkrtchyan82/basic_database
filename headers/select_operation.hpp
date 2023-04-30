@@ -13,6 +13,9 @@ class Select : public Operation {
     Select();
     std::function<bool(nlohmann::json&)> execute(const std::vector<std::string>&) override;
     void validate(const std::vector<std::string>&, const nlohmann::json&) override;
+
+   private:
+    void _validate_all(const std::vector<std::string>&, const nlohmann::json&);
 };
 
 #endif  // _select_operation_hpp_
