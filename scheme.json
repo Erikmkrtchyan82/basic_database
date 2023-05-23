@@ -1,0 +1,11 @@
+{
+    "Laboratory": {
+        "name": "string",
+        "room_number": "int"
+    },
+    "Group": {
+        "name": "string",
+        "department": "string",
+        "student_count": "int"
+    }
+}
