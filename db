@@ -1,6 +1,7 @@
-#! /usr/bin/env bash
+#! /bin/bash
 
-set -e pipefail
+set -e pipefail $@
+shift
 
 function run() {
     ./build/cpp_db "$@"

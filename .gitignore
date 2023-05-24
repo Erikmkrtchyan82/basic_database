@@ -1,4 +1,5 @@
 build/
 .vscode/
+external/
 db.json
 scheme.json
